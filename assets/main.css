@@ -1,0 +1,42 @@
+* {
+	font-family: proxima-nova, sans-serif
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.visible {
+	display: visible;
+}
+
+ul {
+	list-style: none;
+	padding-left: 1em;
+}
+
+ul li:before {
+	
+}
+
+a {
+	color: #08c;
+}
+
+a:hover {
+	color: #005580;
+	text-decoration: none;
+}
+
+#list {
+	display: none;
+}
+
+#count {
+	color: #08c;
+	border-bottom: 1px dotted #08c;
+}
+
+#count:hover {
+	cursor: pointer;
+}
