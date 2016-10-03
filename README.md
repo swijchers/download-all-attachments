@@ -2,15 +2,9 @@
 
 Does what it says on the tin. Download all ticket's attachments all in a single ZIP.
 
-### The following information is displayed:
+Please submit bug reports to [Charles Wood](mailto:charles.adrian.wood@gmail.com). Pull requests are welcome.
 
-* info1
-* info2
-* info3
-
-Please submit bug reports to [mailto:charles.adrian.wood@gmail.com](Charles Wood). Pull requests are welcome.
-
-Icons made by [http://www.flaticon.com/authors/freepik](Freepik) from [http://www.flaticon.com](www.flaticon.com). Licensed by [http://creativecommons.org/licenses/by/3.0/](CC 3.0 BY).
+Icons made by [Freepik](http://www.flaticon.com/authors/freepik) from [www.flaticon.com](http://www.flaticon.com). Licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/).
 
 ### Screenshot(s):
-[put your screenshots down here.]
+[put your screenshots down here]
