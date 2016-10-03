@@ -1,33 +1,73 @@
 $(function() {
-	var client = ZAFClient.init();
-	//client.invoke('resize', { width: '100%', height: '320px' });
-	
-	message("Finding attachments...");
-	
-	var attachments;
-	findAttachments(client);
+
+	var
+
+		client = ZAFClient.init(),
+
+		attachments = [],
+
+		path = "ticket.comments",
+
+		findAttachments = function() {
+			client.get(path).then(function(response) {
+				var allComments = response[path];
+				attachments = $.map($.makeArray(allComments), function(comment) {
+					return [].concat(comment.imageAttachments).concat(comment.nonImageAttachments);
+				});
+				if (attachments.length === 0) {
+					hide("#download");
+					message("No attachments found in this ticket.");
+				} else {
+					var $list = $("#list");
+					var html = $.map(attachments, function(attachment) {
+						return (
+							"<li>" +
+							"<a href='"+attachment.contentUrl+"'>"+attachment.filename+"</a>" +
+							"</li>"
+						)
+					});
+					$list.append(html);
+					show("#download");
+					message("<span id='count'>" + attachments.length + " attachment" + (attachments.length == 1 ? "" : "s") + "</span> found in this ticket.");
+				}
+			});
+		},
+
+		downloadAttachments = function() {
+			message("Fetching files...");
+			
+			var zip = new JSZip();
+			$.each(attachments, function(index, attachment) {
+				zip.file(attachment.filename, urlToPromise(attachment.contentUrl), {binary:true});
+			});
+			zip
+			.generateAsync({type:"blob"}, function updateCallback(metadata) {
+				message("Making ZIP: " + metadata.percent.toFixed(2) + "% complete.");
+			})
+			.then(function (content) {
+				var now = new Date();
+				var filename = "attachments-";
+					filename += now.getFullYear() + "-" + (now.getMonth()+1) + "-" + now.getDate() + "-" + now.getMilliseconds();
+					filename += ".zip";
+				saveAs(content, filename);
+			})
+			.then(function() {
+				message("ZIP downloading.");
+			});
+		}
+	;
+
+	client.on('app.registered', function(event) {
+		message("Finding attachments...");
+		findAttachments();
+	});
+
+	client.on('ticket.comments.changed', function(event) {
+		console.log(event);
+	});
+
 	$("#download").on("click", function() {
-		
-		message("Fetching files...");
-		
-		var zip = new JSZip();
-		$.each(attachments, function(index, attachment) {
-			zip.file(attachment.filename, urlToPromise(attachment.contentUrl), {binary:true});
-		});
-		zip
-		.generateAsync({type:"blob"}, function updateCallback(metadata) {
-			message("Making ZIP: " + metadata.percent.toFixed(2) + "% complete.");
-		})
-		.then(function (content) {
-			var now = new Date();
-			var filename = "attachments-";
-				filename += now.getFullYear() + "-" + (now.getMonth()+1) + "-" + now.getDate() + "-" + now.getMilliseconds();
-				filename += ".zip";
-			saveAs(content, filename);
-		})
-		.then(function() {
-			message("ZIP complete. It will download automatically.");
-		});
+		downloadAttachments();
 	});
 	
 	$("#message").on("click", function() {
@@ -35,32 +75,6 @@ $(function() {
 	});
 
 });
-
-function findAttachments(client) {
-	var path = "ticket.comments";
-	client.get(path).then(function(response) {
-		var allComments = response[path];
-		attachments = $.map($.makeArray(allComments), function(comment) {
-			return [].concat(comment.imageAttachments).concat(comment.nonImageAttachments);
-		});
-		if (attachments.length === 0) {
-			hide("#download");
-			message("No attachments found in this ticket.");
-		} else {
-			var $list = $("#list");
-			var html = $.map(attachments, function(attachment) {
-				return (
-					"<li>" +
-					"<a href='"+attachment.contentUrl+"'>"+attachment.filename+"</a>" +
-					"</li>"
-				)
-			});
-			$list.append(html);
-			show("#download");
-			message("<span id='count'>" + attachments.length + " attachment" + (attachments.length == 1 ? "" : "s") + "</span> found in this ticket.");
-		}
-	});
-}
 
 function message(message) {
 	$("#message").html(message);
