@@ -33,9 +33,7 @@ $(function() {
 			});
 		},
 
-		downloadAttachments = function() {
-			message("Fetching files...");
-			
+		downloadAttachments = function() {			
 			var zip = new JSZip();
 			$.each(attachments, function(index, attachment) {
 				zip.file(attachment.filename, urlToPromise(attachment.contentUrl), {binary:true});
@@ -44,12 +42,15 @@ $(function() {
 			.generateAsync({type:"blob"}, function updateCallback(metadata) {
 				message("Making ZIP: " + metadata.percent.toFixed(2) + "% complete.");
 			})
-			.then(function (content) {
-				var now = new Date();
-				var filename = "attachments-";
-					filename += now.getFullYear() + "-" + (now.getMonth()+1) + "-" + now.getDate() + "-" + now.getMilliseconds();
+			.then(function (blob) {
+				client.context().then(function(context) {
+					var filename = "Zendesk-";
+					filename += context.ticketId;
+					filename += "-attachments-";
+					filename += new Date().getTime();
 					filename += ".zip";
-				saveAs(content, filename);
+					saveAs(blob, filename);
+				})
 			})
 			.then(function() {
 				message("ZIP downloading.");
@@ -58,7 +59,8 @@ $(function() {
 	;
 
 	client.on('app.registered', function(event) {
-		message("Finding attachments...");
+		console.log("***app fdas***");
+		message("Checking for attachments...");
 		findAttachments();
 	});
 
@@ -67,6 +69,7 @@ $(function() {
 	});
 
 	$("#download").on("click", function() {
+		message("Downloading files...");
 		downloadAttachments();
 	});
 	
