@@ -21,6 +21,7 @@ $(function() {
 				});
 				$('#container').show();
 				if (attachments.length === 0) {
+					$download.hide();
 					message("No attachments found in this ticket.");
 				} else {
 					var html = $.map(attachments, function(attachment) {
@@ -32,6 +33,7 @@ $(function() {
 					});
 					$list.append(html).toggle();;
 					message("<span id='count'>" + attachments.length + " attachment" + (attachments.length == 1 ? "" : "s") + "</span> found in this ticket.");
+					$download.show();
 				}
 			});
 		},
