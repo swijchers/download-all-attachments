@@ -1,7 +1,7 @@
 <html>
   <!-- https://github.com/zendesk/zendesk_app_framework_sdk -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="//code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
 
   <!-- IE does not implement Promises -->
@@ -10,14 +10,16 @@
   <script type="text/javascript" src="jszip.min.js"></script>
   <script type="text/javascript" src="jszip-utils.js"></script>
   <script type="text/javascript" src="FileSaver.js"></script>
-  <script type="text/javascript" src="main.js"></script>
+
+  <script type="text/javascript" src="main.js" defer='defer'></script>
   <link href="main.css" rel="stylesheet"/>
+
 <body>
-	<div class="container-fluid">
+	<div class="container-fluid" style="display: none;" id="container">
 		<p id="message"></p>
-		<ul id="list">
-		</ul>
-		<button id="download" class="hidden btn btn-default">Download All</button>
+    <p id="status"></p>
+    <ul id="list"></ul>
+	  <button id="download" class="btn btn-default">Download All</button>
 	</div>
 </body>
 </html>

@@ -8,17 +8,21 @@ $(function() {
 
 		path = "ticket.comments",
 
+		$download = $('#download'),
+		$list = $('#list'),
+		$message = $('#message'),
+		$status = $('#status'),
+
 		findAttachments = function() {
 			client.get(path).then(function(response) {
 				var allComments = response[path];
 				attachments = $.map($.makeArray(allComments), function(comment) {
 					return [].concat(comment.imageAttachments).concat(comment.nonImageAttachments);
 				});
+				$('#container').show();
 				if (attachments.length === 0) {
-					hide("#download");
 					message("No attachments found in this ticket.");
 				} else {
-					var $list = $("#list");
 					var html = $.map(attachments, function(attachment) {
 						return (
 							"<li>" +
@@ -26,8 +30,7 @@ $(function() {
 							"</li>"
 						)
 					});
-					$list.append(html);
-					show("#download");
+					$list.append(html).toggle();;
 					message("<span id='count'>" + attachments.length + " attachment" + (attachments.length == 1 ? "" : "s") + "</span> found in this ticket.");
 				}
 			});
@@ -35,12 +38,14 @@ $(function() {
 
 		downloadAttachments = function() {			
 			var zip = new JSZip();
+			
 			$.each(attachments, function(index, attachment) {
 				zip.file(attachment.filename, urlToPromise(attachment.contentUrl), {binary:true});
 			});
+
 			zip
 			.generateAsync({type:"blob"}, function updateCallback(metadata) {
-				message("Making ZIP: " + metadata.percent.toFixed(2) + "% complete.");
+				status("Making ZIP: " + metadata.percent.toFixed(2) + "%");
 			})
 			.then(function (blob) {
 				client.context().then(function(context) {
@@ -53,14 +58,39 @@ $(function() {
 				})
 			})
 			.then(function() {
-				message("ZIP downloading.");
+				status("ZIP done!");
+				setTimeout(function() {
+					hide($status);
+					show($message);
+					show($download);
+				}, 2000);
 			});
+		},
+
+		message = function(message) {
+			display($message, message);
+		},
+		
+		status = function(message) {
+			display($status, message);
+		},
+
+		display = function($element, message) {
+			$element.html(message);
+		},
+
+		show = function($element) {
+			$element.show(600);
+		},
+
+		hide = function($element) {
+			$element.hide(600);
 		}
 	;
 
-	client.on('app.registered', function(event) {
-		console.log("***app fdas***");
-		message("Checking for attachments...");
+	// EVENT HANDLERS //
+
+	client.on('app.registered', function appRegistered(event) {
 		findAttachments();
 	});
 
@@ -68,29 +98,18 @@ $(function() {
 		console.log(event);
 	});
 
-	$("#download").on("click", function() {
-		message("Downloading files...");
+	$download.on("click", function() {
+		hide($message);
+		$download.hide();
+		status("Fetching attachments...");
 		downloadAttachments();
 	});
 	
-	$("#message").on("click", function() {
-		$("#list").slideToggle();
+	$message.on("click", function() {
+		$list.slideToggle();
 	});
 
 });
-
-function message(message) {
-	$("#message").html(message);
-}
-
-function show(selector) {
-	$(selector).removeClass("hidden").addClass("visible");
-}
-
-function hide(selector) {
-	$(selector).removeClass("visible").addClass("hidden");
-}
-
 
 /**
  * Fetch the content and return the associated promise.
