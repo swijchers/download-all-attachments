@@ -27,7 +27,7 @@ $(function() {
 					var html = $.map(attachments, function(attachment) {
 						return (
 							"<li>" +
-							"<a href='"+attachment.contentUrl+"'>"+attachment.filename+"</a>" +
+							"<a href='"+attachment.contentUrl+"' target='_blank'>"+attachment.filename+"</a>" +
 							"</li>"
 						)
 					});
