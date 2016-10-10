@@ -60,8 +60,15 @@ $(function() {
 		},
 
 		downloadAttachments = function() {
+			var first = true;
 			return makeZip()
 			.generateAsync({type:"blob"}, function updateCallback(metadata) {
+
+				if (first) {
+					$progress.parent().show();
+					first = false;
+				}
+
 				var percent = metadata.percent;
 				
 				$progress
@@ -131,7 +138,7 @@ $(function() {
 	$download.on("click", function() {
 		hide($message);
 		$download.hide();
-		$progress.parent().show();
+		show($status);
 		status("Fetching attachments...");
 		downloadAttachments().
 		then(function() {
