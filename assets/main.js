@@ -12,6 +12,7 @@ $(function() {
 		$list = $('#list'),
 		$message = $('#message'),
 		$status = $('#status'),
+		$progress = $('#progress'),
 
 		findAttachments = function() {
 			return client.get(path).then(function(response) {
@@ -59,11 +60,17 @@ $(function() {
 		},
 
 		downloadAttachments = function() {
-			return makeZip().
-			generateAsync({type:"blob"}, function updateCallback(metadata) {
-				status("Making ZIP: " + metadata.percent.toFixed(2) + "%");
-			}).
-			then(function (blob) {
+			return makeZip()
+			.generateAsync({type:"blob"}, function updateCallback(metadata) {
+				var percent = metadata.percent;
+				
+				$progress
+				.attr('aria-valuenow', percent)
+				.width(percent+"%");
+
+				status("Making ZIP: " + percent.toFixed(2) + "%");
+			})
+			.then(function (blob) {
 				client.context().then(function(context) {
 					var filename = "Zendesk-";
 					filename += context.ticketId;
@@ -99,6 +106,7 @@ $(function() {
 	// EVENT HANDLERS //
 
 	client.on('app.registered', function appRegistered(event) {
+		$progress.parent().hide();
 		findAttachments()
 		.then(function() {
 			attachments.sort(function(a,b) {
@@ -123,12 +131,14 @@ $(function() {
 	$download.on("click", function() {
 		hide($message);
 		$download.hide();
+		$progress.parent().show();
 		status("Fetching attachments...");
 		downloadAttachments().
 		then(function() {
 			status("ZIP done!");
 			setTimeout(function() {
 				hide($status);
+				hide($progress.parent());
 				show($message);
 				show($download);
 			}, 2000);
