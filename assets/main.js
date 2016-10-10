@@ -158,24 +158,22 @@ $(function() {
 		$list.slideToggle();
 	});
 
-});
-
-/**
- * Fetch the content and return the associated promise.
- * @param {String} url the url of the content to fetch.
- * @return {Promise} the promise containing the data.
- */
-function urlToPromise(url) {
-	return new Promise(function(resolve, reject) {
-		JSZipUtils.getBinaryContent(url, function (err, data) {
-			if(err) {
-				reject(err);
-			} else {
-				resolve(data);
-			}
+	/**
+	 * Fetch the content and return the associated promise.
+	 * @param {String} url the url of the content to fetch.
+	 * @return {Promise} the promise containing the data.
+	 */
+	function urlToPromise(url) {
+		return new Promise(function(resolve, reject) {
+			JSZipUtils.getBinaryContent(url, function (err, data) {
+				if(err) {
+					reject(err);
+				} else {
+					resolve(data);
+				}
+			});
 		});
-	});
-}
+	}
 
-
+});
 
