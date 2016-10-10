@@ -67,16 +67,12 @@ $(function() {
 			.generateAsync({type:"blob"}, function updateCallback(metadata) {
 
 				if (first) {
-					$progress.parent().show();
+					$progress.show();
 					first = false;
 				}
 
 				var percent = metadata.percent;
-				
-				$progress
-				.attr('aria-valuenow', percent)
-				.width(percent+"%");
-
+				$progress.percent = percent;
 				status("Making ZIP: " + percent.toFixed(2) + "%");
 			})
 			.then(function (blob) {
@@ -112,10 +108,22 @@ $(function() {
 		}
 	;
 
+	/**
+	* Set the width of the colored part of the progress bar.
+	*/
+	Object.defineProperty($progress, "percent", {
+		set: function(percent) {
+			this
+			.children(":first")
+			.attr('aria-valuenow', percent)
+			.width(percent+"%");
+		}
+	});
+
 	// EVENT HANDLERS //
 
 	client.on('app.registered', function appRegistered(event) {
-		$progress.parent().hide();
+		$progress.hide();
 		findAttachments()
 		.then(function() {
 			attachments.sort(function(a,b) {
@@ -147,7 +155,8 @@ $(function() {
 			status("ZIP done!");
 			setTimeout(function() {
 				hide($status);
-				hide($progress.parent());
+				hide($progress);
+				$progress.percent = 0;
 				show($message);
 				show($download);
 			}, 2000);
