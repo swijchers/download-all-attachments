@@ -8,13 +8,14 @@ $(function() {
 
 		attachments = [],
 
-		comment_path = "ticket.comments"
+		comment_path = "ticket.comments",
 
 		$download = $('#download'),
 		$list = $('#list'),
 		$message = $('#message'),
 		$status = $('#status'),
-		$progress = $('#progress')
+		$progress = $('#progress'),
+		$interface = $('#interface')
 
 	;
 
@@ -42,10 +43,11 @@ $(function() {
 	});
 
 	$download.on("click", function() {
-		hide($message);
-		$download.hide();
+		hide($interface);
 		show($status);
+
 		status("Fetching attachments...");
+		
 		downloadAttachments().
 		then(function() {
 			status("ZIP done!");
@@ -53,8 +55,8 @@ $(function() {
 				hide($status);
 				hide($progress);
 				$progress.percent = 0;
-				show($message);
-				show($download);
+
+				show($interface);
 			}, 2000);
 		});
 	});
@@ -106,7 +108,7 @@ $(function() {
 			);
 		});
 		return zip;
-	},
+	}
 
 	function downloadAttachments() {
 		var first = true;
