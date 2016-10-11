@@ -8,119 +8,15 @@ $(function() {
 
 		attachments = [],
 
-		path = "ticket.comments",
+		comment_path = "ticket.comments"
 
 		$download = $('#download'),
 		$list = $('#list'),
 		$message = $('#message'),
 		$status = $('#status'),
-		$progress = $('#progress'),
+		$progress = $('#progress')
 
-		findAttachments = function() {
-			return client.get(path).then(function(response) {
-				var allComments = response[path];
-				attachments = $.map($.makeArray(allComments), function(comment) {
-					return [].concat(comment.imageAttachments).concat(comment.nonImageAttachments);
-				});
-				return new Promise(function(resolve, reject) {
-					if (!$.isArray(attachments) || attachments.length === 0) {
-						reject("No attachments found in this ticket.");
-					} else {
-						resolve();
-					}
-				});
-			});
-		},
-
-		displayAttachments = function() {
-			var html = $.map(attachments, function(attachment) {
-				return (
-					"<li>" +
-					"<a href='"+attachment.contentUrl+"' target='_blank'>"+attachment.filename+"</a>" +
-					"</li>"
-				)
-			});
-			$list.
-				append(html).
-				toggle()
-			;
-			message("<span id='count'>" + attachments.length + " attachment" + (attachments.length == 1 ? "" : "s") + "</span> found in this ticket.");
-		},
-
-		makeZip = function() {
-			var zip = new JSZip();
-			$.each(attachments, function(index, attachment) {
-				zip.file(
-					attachment.filename,
-					urlToPromise(attachment.contentUrl),
-					{
-						binary:true
-					}
-				);
-			});
-			return zip;
-		},
-
-		downloadAttachments = function() {
-			var first = true;
-			return makeZip()
-			.generateAsync({type:"blob"}, function updateCallback(metadata) {
-
-				if (first) {
-					$progress.show();
-					first = false;
-				}
-
-				var percent = metadata.percent;
-				$progress.percent = percent;
-				status("Making ZIP: " + percent.toFixed(2) + "%");
-			})
-			.then(function (blob) {
-				client.context().then(function(context) {
-					var filename = "Zendesk-";
-					filename += context.ticketId;
-					filename += "-attachments-";
-					filename += new Date().getTime();
-					filename += ".zip";
-					saveAs(blob, filename);
-				})
-			});
-		},
-
-		message = function(message) {
-			display($message, message);
-		},
-		
-		status = function(message) {
-			display($status, message);
-		},
-
-		display = function($element, message) {
-			$element.html(message);
-		},
-
-		show = function($element) {
-			$element.show(600);
-		},
-
-		hide = function($element) {
-			$element.hide(600);
-		}
 	;
-
-	/**
-	* Set the width of the colored part of the progress bar.
-	*/
-	Object.defineProperty($progress, "percent", {
-		set: function(percent) {
-			this
-			.find("#progress-bar")
-			.attr('aria-valuenow', percent)
-			.width(percent+"%");
-		}
-	});
-
-	// EVENT HANDLERS //
 
 	client.on('app.registered', function appRegistered(event) {
 		$progress.hide();
@@ -165,6 +61,109 @@ $(function() {
 	
 	$message.on("click", function() {
 		$list.slideToggle();
+	});
+
+	function findAttachments() {
+		return client.get(comment_path).then(function(response) {
+			var allComments = response[comment_path];
+			attachments = $.map($.makeArray(allComments), function(comment) {
+				return [].concat(comment.imageAttachments).concat(comment.nonImageAttachments);
+			});
+			return new Promise(function(resolve, reject) {
+				if (!$.isArray(attachments) || attachments.length === 0) {
+					reject("No attachments found in this ticket.");
+				} else {
+					resolve();
+				}
+			});
+		});
+	}
+
+	function displayAttachments() {
+		var html = $.map(attachments, function(attachment) {
+			return (
+				"<li>" +
+				"<a href='"+attachment.contentUrl+"' target='_blank'>"+attachment.filename+"</a>" +
+				"</li>"
+			)
+		});
+		$list.
+			append(html).
+			toggle()
+		;
+		message("<span id='count'>" + attachments.length + " attachment" + (attachments.length == 1 ? "" : "s") + "</span> found in this ticket.");
+	}
+
+	function makeZip() {
+		var zip = new JSZip();
+		$.each(attachments, function(index, attachment) {
+			zip.file(
+				attachment.filename,
+				urlToPromise(attachment.contentUrl),
+				{
+					binary:true
+				}
+			);
+		});
+		return zip;
+	},
+
+	function downloadAttachments() {
+		var first = true;
+		return makeZip()
+		.generateAsync({type:"blob"}, function updateCallback(metadata) {
+
+			if (first) {
+				$progress.show();
+				first = false;
+			}
+
+			var percent = metadata.percent;
+			$progress.percent = percent;
+			status("Making ZIP: " + percent.toFixed(2) + "%");
+		})
+		.then(function (blob) {
+			client.context().then(function(context) {
+				var filename = "Zendesk-";
+				filename += context.ticketId;
+				filename += "-attachments-";
+				filename += new Date().getTime();
+				filename += ".zip";
+				saveAs(blob, filename);
+			})
+		});
+	}
+
+	function message(message) {
+		display($message, message);
+	}
+	
+	function status(message) {
+		display($status, message);
+	}
+
+	function display($element, message) {
+		$element.html(message);
+	}
+
+	function show($element) {
+		$element.show(600);
+	}
+
+	function hide($element) {
+		$element.hide(600);
+	}
+
+	/**
+	* Set the width of the colored part of the progress bar.
+	*/
+	Object.defineProperty($progress, "percent", {
+		set: function(percent) {
+			this
+			.find("#progress-bar")
+			.attr('aria-valuenow', percent)
+			.width(percent+"%");
+		}
 	});
 
 	/**
