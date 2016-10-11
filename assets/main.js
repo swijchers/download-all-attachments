@@ -114,7 +114,7 @@ $(function() {
 	Object.defineProperty($progress, "percent", {
 		set: function(percent) {
 			this
-			.children(":first")
+			.find("#progress-bar")
 			.attr('aria-valuenow', percent)
 			.width(percent+"%");
 		}
