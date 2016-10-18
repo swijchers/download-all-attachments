@@ -10,6 +10,7 @@ $(function() {
 
 		comment_path = "ticket.comments",
 
+    $container = $('#container'),
 		$download = $('#download'),
 		$list = $('#list'),
 		$message = $('#message'),
@@ -34,7 +35,7 @@ $(function() {
 			$download.hide();
 		})
 		.then(function() {
-			$('#container').show();
+			$container.show();
 		});
 	});
 
@@ -55,7 +56,6 @@ $(function() {
 				hide($status);
 				hide($progress);
 				$progress.percent = 0;
-
 				show($interface);
 			}, 2000);
 		});
@@ -89,10 +89,9 @@ $(function() {
 				"</li>"
 			)
 		});
-		$list.
-			append(html).
-			toggle()
-		;
+		$list
+		.append(html)
+		.toggle();
 		message("<span id='count'>" + attachments.length + " attachment" + (attachments.length == 1 ? "" : "s") + "</span> found in this ticket.");
 	}
 
