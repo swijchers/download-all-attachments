@@ -2,15 +2,30 @@
 
 Tired of downloading Zendesk attachments one... at... a... time? I was, so I made this app. Download all attachments from a ticket with one click!
 
-There's not really much to it. Install the app via the marketplace and it will show up in the sidebar. For a ticket with attachments, it gives you a button to click that will create a ZIP of all attachments and download it.
+There's not really much to it:
+
+* Install the app via the marketplace and it will show up in the sidebar.
+* If a ticket has attachments, you get a "Download All Attachments" button.
+* Click that button to have a ZIP of all attachments automatically created and downloaded!
 
 This app does all its work directly in the browser, making it a safe choice for corporate environments.
 
-NOTE: this app is built with pretty new technology, meaning it may not work in older browsers. It has been tested in recent versions of Chrome, Firefox, IE, Edge, and Opera. However, I can't make any guarantees that it will work in your particular environment.
+**Some things to note:**
 
-However, I would love to hear about any ways in which it could improve! Please feel free to email me at charles.adrian.wood@gmail.com.
+* Because it does its work in the browser, it cannot present you with a "Save As" dialog. It will save the download to wherever your browser automatically saves things. Usually, this will be a "Downloads" folder. If you have trouble finding your download, please contact me.
+* THIS APP IS CURRENTLY IN ALPHA STATUS.  
+It is built with pretty new technology, meaning it may not work in older browsers. It has been tested in recent versions of Chrome, Firefox, IE, Edge, and Opera, but I can't make any guarantees that it will work in your particular environment.
 
-Source code is maintained at https://github.com/chuck-wood/download-all-attachments. Pull requests are welcome.
+**If you try this app, please let me know how it goes.**  
+I would love to hear about any ways in which it could be improved! Please feel free to email me at charles.adrian.wood@gmail.com.
+
+Please also take a look at this list of **planned improvements:**
+
+* Select which files you'd like to download
+* Preview on hover
+* Optionally send files to an external server in order to get a "Save As" dialog.
+
+Source code is maintained at https://github.com/chuck-wood/download-all-attachments. Pull requests and issues are welcome.
 
 Icons made by [Freepik](http://www.flaticon.com/authors/freepik) from [www.flaticon.com](http://www.flaticon.com). Licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/).
 
