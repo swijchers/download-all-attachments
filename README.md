@@ -12,18 +12,10 @@ This app does all its work directly in the browser, making it a safe choice for 
 
 **Some things to note:**
 
-* Because it does its work in the browser, it cannot present you with a "Save As" dialog. It will save the download to wherever your browser automatically saves things. Usually, this will be a "Downloads" folder. If you have trouble finding your download, please contact me.
-* THIS APP IS CURRENTLY IN ALPHA STATUS.  
-It is built with pretty new technology, meaning it may not work in older browsers. It has been tested in recent versions of Chrome, Firefox, IE, Edge, and Opera, but I can't make any guarantees that it will work in your particular environment.
+* Because it does its work in the browser, it cannot present you with a "Save As" dialog. It will save the download to wherever your browser automatically saves things. Usually, this will be a "Downloads" folder, and the browser should pop up a notification.
+* It is built with pretty new technology, meaning it may not work in older browsers. It has been tested in recent versions of Chrome, Firefox, IE, Edge, and Opera, but I can't make any guarantees that it will work in your particular environment.
 
-**If you try this app, please let me know how it goes.**  
-I would love to hear about any ways in which it could be improved! Please feel free to email me at charles.adrian.wood@gmail.com.
-
-Please also take a look at this list of **planned improvements:**
-
-* Select which files you'd like to download
-* Preview on hover
-* Optionally send files to an external server in order to get a "Save As" dialog.
+Feel free to send any questions or feedback to charles.adrian.wood@gmail.com.
 
 Source code is maintained at https://github.com/chuck-wood/download-all-attachments. Pull requests and issues are welcome.
 
