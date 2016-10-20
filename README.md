@@ -22,4 +22,6 @@ Source code is maintained at https://github.com/chuck-wood/download-all-attachme
 Icons made by [Freepik](http://www.flaticon.com/authors/freepik) from [www.flaticon.com](http://www.flaticon.com). Licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/).
 
 ### Screenshot(s):
-[put your screenshots down here]
+![](assets/screenshot-0.png)
+![](assets/screenshot-1.png)
+![](assets/screenshot-2.png)
