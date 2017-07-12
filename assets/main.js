@@ -66,31 +66,23 @@ $(function() {
 	});
 
 	function findAttachments() {
-		return client.get(comment_path).then(function(response) {
-			var allComments = response[comment_path];
-			attachments = $.map($.makeArray(allComments), function(comment) {
-				return [].concat(comment.imageAttachments).concat(comment.nonImageAttachments);
+		return client.get(comment_path)
+			.then(function(response) {
+				var comments = $.makeArray(response[comment_path]);
+				var allAttachments = $.map(comments, function(comment) {
+					return []
+						.concat(comment.imageAttachments)
+						.concat(comment.nonImageAttachments);
+				});
+				attachments = deduplicate(allAttachments);
+				return new Promise(function(resolve, reject) {
+					if (!$.isArray(attachments) || attachments.length === 0) {
+						reject("No attachments found in this ticket.");
+					} else {
+						resolve();
+					}
+				});
 			});
-            var filenameCounts = {};
-            $.each(attachments, function(index, attachment) {
-                filenameCounts[attachment.filename] = filenameCounts[attachment.filename] + 1 || 1;
-            });
-            attachments = $.map(attachments, function(attachment) {
-                if (filenameCounts[attachment.filename] > 1) {
-                    var token = getToken(attachment);
-                    var newFilename = appendStringToFilename(attachment.filename, "-" + token);
-                    attachment.filename = newFilename;
-                }
-                return attachment;
-            });
-			return new Promise(function(resolve, reject) {
-				if (!$.isArray(attachments) || attachments.length === 0) {
-					reject("No attachments found in this ticket.");
-				} else {
-					resolve();
-				}
-			});
-		});
 	}
 
 	function displayAttachments() {
@@ -208,22 +200,33 @@ $(function() {
         }
     }
 
-    /**
-        Return a truncated version of the Zendesk attachment token.
-        The token from appears to use numbers, lowercase letters, 
-        and uppercase letters. Repetition appears to be allowed. Using the first 8 should
-        allow for about 1e9 possible values.
-        (r + n - 1)! / r!(n - 1)!
-        n = 8, r = 62
-    */
-    function getToken(attachment) {
-        return attachment
-            .contentUrl
-            .split("token/")[1]
-            .split("/")[0]
-            .substring(0, 8)
-        ;
-    }
+    // Modified from
+    // https://stackoverflow.com/a/34972148/1110820
+    // Takes an array of attachments and appends numbers
+    // to the filenames to get rid of duplicates.
+    // (Like Windows filenames.)
+	function deduplicate(attachments) {
+
+		var c = {}, 
+		t = function(x, n) { return appendStringToFilename(x, "(" + n + ")"); };
+		
+		return attachments.map(function(attachment) {
+			var n = c[attachment.filename] || 0;			
+			c[attachment.filename] = n + 1;
+
+			if (!n) {
+				return attachment;
+			}
+			
+			while (c[t(attachment.filename, n)]) {
+				n++;
+			}
+			
+			c[t(attachment.filename, n)] = 1;
+			attachment.filename = t(attachment.filename, n);
+			return attachment;
+		});
+
+	}
 
 });
-
