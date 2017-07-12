@@ -2,15 +2,11 @@ $(function() {
 
 	'use strict';
 
-	var
-
-		client = ZAFClient.init(),
-
+	var client = ZAFClient.init(),
 		attachments = [],
-
 		comment_path = "ticket.comments",
 
-    $container = $('#container'),
+		$container = $('#container'),
 		$download = $('#download'),
 		$list = $('#list'),
 		$message = $('#message'),
@@ -20,11 +16,12 @@ $(function() {
 
 	;
 
-	client.on('app.registered', function appRegistered(event) {
+	client.on('app.registered', function(event) {
 		$progress.hide();
 		findAttachments()
 		.then(function() {
-			attachments.sort(function(a,b) {
+			attachments
+			.sort(function(a,b) {
 				return a.filename > b.filename ? 1 : a.filename < b.filename ? -1 : 0;
 			});
 			displayAttachments();
@@ -40,7 +37,7 @@ $(function() {
 	});
 
 	client.on('ticket.comments.changed', function(event) {
-		console.log(event);
+		// console.log(event);
 	});
 
 	$download.on("click", function() {
