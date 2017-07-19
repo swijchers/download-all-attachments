@@ -6,14 +6,14 @@ There's not really much to it:
 
 * Install the app via the marketplace and it will show up in the sidebar.
 * If a ticket has attachments, you get a "Download All Attachments" button.
-* Click that button to have a ZIP of all attachments automatically created and downloaded!
+* Click that button to have a ZIP of all attachments automatically created and downloaded.
 
 This app does all its work directly in the browser, making it a safe choice for corporate environments.
 
 ### Some things to note
 
-* Because this app is just JavaScript, it can't reliably ask you where you want to save the ZIP. Your browser will probably just save the ZIP to wherever it automatically saves things. Usually, this will be a "Downloads" folder, and the browser should pop up a notification about it.
-* This app is built with pretty new technology, meaning it may not work in older browsers. It has been tested in recent versions of Chrome, Firefox, IE, Edge, and Opera, but I can't make any guarantees that it will work in your particular environment.
+* Because this app is just JavaScript, it can't reliably ask you where you want to save the ZIP. Your browser will probably just save the ZIP to wherever it automatically saves things. Usually, this will be a "Downloads" folder, and the browser should pop up a notification about it. See the screenshots for an example.
+* This app is built with relatively new technology, meaning it may not work in older browsers. It has been tested in recent versions of Chrome, Firefox, IE, Edge, and Opera, but I can't make any guarantees that it will work in your particular environment.
 
 Feel free to send any questions or feedback to charles.adrian.wood@gmail.com.
 
