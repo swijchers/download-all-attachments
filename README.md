@@ -10,14 +10,20 @@ There's not really much to it:
 
 This app does all its work directly in the browser, making it a safe choice for corporate environments.
 
-### Some things to note
+### Settings
 
-* Because this app is just JavaScript, it can't reliably ask you where you want to save the ZIP. Your browser will probably just save the ZIP to wherever it automatically saves things. Usually, this will be a "Downloads" folder, and the browser should pop up a notification about it. See the screenshots for an example.
+* **Expandable** *(off by default)*
+
+  If this setting is enabled, clicking on the number of attachments (e.g., "4 attachments found") will cause the whole app to expand so that you can easily see the whole list of attachments. If the setting is disabled (the default), the list of attachments will still expand, but the app won't.
+
+### Please Note
+
+* Because this app is just JavaScript, it can't reliably be made to ask you where you want to save the ZIP. Your browser will probably just save the ZIP to wherever it usually saves things. This is typically a "Downloads" folder, and the browser should pop up a notification about it. See the screenshots for an example.
 * This app is built with relatively new technology, meaning it may not work in older browsers. It has been tested in recent versions of Chrome, Firefox, IE, Edge, and Opera, but I can't make any guarantees that it will work in your particular environment.
 
 Feel free to send any questions or feedback to charles.adrian.wood@gmail.com.
 
-Source code is maintained at https://github.com/chuck-wood/download-all-attachments. Pull requests and issues are welcome.
+Source code is maintained at [https://github.com/chuck-wood/download-all-attachments](https://github.com/chuck-wood/download-all-attachments). Pull requests and issues are welcome.
 
 Icons made by [Freepik](http://www.flaticon.com/authors/freepik) from [www.flaticon.com](http://www.flaticon.com). Licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/).
 
