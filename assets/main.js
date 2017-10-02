@@ -12,8 +12,8 @@ $(function() {
 		$message = $('#message'),
 		$status = $('#status'),
 		$progress = $('#progress'),
-		$interface = $('#interface')
-
+		$interface = $('#interface'),
+		$expand = $('#expand')
 	;
 
 	client.on('app.registered', function(event) {
@@ -59,7 +59,13 @@ $(function() {
 	});
 	
 	$message.on("click", function() {
-		$list.slideToggle();
+		$list.toggle(0, function() {
+			client.metadata().then(function(metadata) {
+				if (metadata.settings.expand) {
+					client.invoke('resize', { height: $container.css("height") });
+				}
+			});
+		});
 	});
 
 	function findAttachments() {
@@ -73,13 +79,21 @@ $(function() {
 				});
 				attachments = deduplicate(allAttachments);
 				return new Promise(function(resolve, reject) {
-					if (!$.isArray(attachments) || attachments.length === 0) {
+					var attachmentsFound = $.isArray(attachments) && attachments.length > 0;
+					layout({attachmentsFound: attachmentsFound});
+					if (!attachmentsFound) {
 						reject("No attachments found in this ticket.");
 					} else {
 						resolve();
 					}
 				});
 			});
+	}
+
+	function layout(prefs) {
+		var attachmentsFound = prefs.attachmentsFound;
+		var height = attachmentsFound ? "4rem" : "2rem";
+		client.invoke('resize', { height: height });
 	}
 
 	function displayAttachments() {
@@ -93,7 +107,13 @@ $(function() {
 		$list
 		.append(html)
 		.toggle();
-		message("<span id='count'>" + attachments.length + " attachment" + (attachments.length == 1 ? "" : "s") + "</span> found in this ticket.");
+		message(
+			"<span id='count'>" + 
+				attachments.length + 
+				" attachment" + 
+				(attachments.length == 1 ? "" : "s") + 
+			"</span> found in this ticket."
+		);
 	}
 
 	function makeZip() {
