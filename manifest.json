@@ -16,7 +16,7 @@
     {
       "name": "expand",
       "type": "checkbox",
-      "default": "false"
+      "default": "true"
     }
   ]
 }
