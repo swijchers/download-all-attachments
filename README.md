@@ -7,15 +7,9 @@ There's not really much to it:
 * Install the app via the marketplace and it will show up in the sidebar.
 * If a ticket has attachments, you get a "Download All Attachments" button.
 * Click that button to have a ZIP of all attachments downloaded to your computer.
-* Click on the count of attachments (e.g., "4 attachments found") to get a list of all attachments.
+  * You can also click on the count of attachments (e.g., "4 attachments found") to get a list of all attachments.
 
 This app does all its work directly in the browser, making it a safe choice for corporate environments.
-
-### Settings
-
-* **Expandable** *(off by default)*
-
-  If this setting is enabled, clicking on the number of attachments (e.g., "4 attachments found") will cause the whole app to expand so that you can easily see the whole list of attachments. If the setting is disabled (the default), the list of attachments will still expand, but the whole app won't.
 
 ### DISCLAIMERS
 

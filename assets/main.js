@@ -60,11 +60,7 @@ $(function() {
 	
 	$message.on("click", function() {
 		$list.toggle(0, function() {
-			client.metadata().then(function(metadata) {
-				if (metadata.settings.expand) {
-					client.invoke('resize', { height: $container.css("height") });
-				}
-			});
+			client.invoke('resize', { height: $container.css("height") });
 		});
 	});
 
