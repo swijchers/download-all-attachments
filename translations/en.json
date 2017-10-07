@@ -7,7 +7,7 @@
     "parameters": {
     	"expand": {
     		"label": "Expandable",
-    		"helpText": "When you click the link to see the list of items, expand the whole app."
+    		"helpText": "When you click the link to see the list of items, the whole app will expand."
     	}
     }
   }
