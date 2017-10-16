@@ -3,8 +3,9 @@ $(function() {
 	'use strict';
 
 	var client = ZAFClient.init(),
-		attachments = [],
-		comment_path = "ticket.comments",
+		attachments = [], // attachments is "global" so we don't have to get the list repeatedly
+		
+		COMMENT_PATH = "ticket.comments",
 
 		$container = $('#container'),
 		$download = $('#download'),
@@ -20,10 +21,7 @@ $(function() {
 		$progress.hide();
 		findAttachments()
 		.then(function() {
-			attachments
-			.sort(function(a,b) {
-				return a.filename > b.filename ? 1 : a.filename < b.filename ? -1 : 0;
-			});
+			attachments.sort(defaultSort);
 			displayAttachments();
 			$download.show();
 		})
@@ -46,8 +44,8 @@ $(function() {
 
 		status("Fetching attachments...");
 		
-		downloadAttachments().
-		then(function() {
+		downloadAttachments()
+		.then(function() {
 			status("ZIP done!");
 			setTimeout(function() {
 				hide($status);
@@ -59,21 +57,19 @@ $(function() {
 	});
 	
 	$message.on("click", function() {
-		$list.toggle(0, function() {
-			client.invoke('resize', { height: $container.css("height") });
+		$list.toggle(0, function() { // expand the list, and...
+			client.invoke('resize', { height: $container.css("height") }); // ...expand the app so you can see the list
 		});
 	});
 
+	function defaultSort(a, b) {
+		return a.filename > b.filename ? 1 : a.filename < b.filename ? -1 : 0;
+	}
+
 	function findAttachments() {
-		return client.get(comment_path)
+		return client.get(COMMENT_PATH)
 			.then(function(response) {
-				var comments = $.makeArray(response[comment_path]);
-				var allAttachments = $.map(comments, function(comment) {
-					return []
-						.concat(comment.imageAttachments)
-						.concat(comment.nonImageAttachments);
-				});
-				attachments = deduplicate(allAttachments);
+				attachments = getAllAttachments(response);
 				return new Promise(function(resolve, reject) {
 					var attachmentsFound = $.isArray(attachments) && attachments.length > 0;
 					layout({attachmentsFound: attachmentsFound});
@@ -84,6 +80,16 @@ $(function() {
 					}
 				});
 			});
+	}
+
+	function getAllAttachments(response) {
+		var comments = $.makeArray(response[COMMENT_PATH]);
+		var allAttachments = $.map(comments, function(comment) {
+			return []
+				.concat(comment.imageAttachments)
+				.concat(comment.nonImageAttachments);
+		});
+		return deduplicate(allAttachments);
 	}
 
 	function layout(prefs) {
