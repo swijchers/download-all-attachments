@@ -39,7 +39,7 @@
   </script>
 
   <!-- This one must be all on one line! -->
-  <script type="text/x-tmpl" id="attachment-filename">Zendesk-{%= o.id %}-attachments-{% include("date-format", o); %}.zip</script>
-  <script type="text/x-tmpl" id="date-format">{%=o.year%}-{%=o.month%}-{%=o.day%}-{%=o.hour%}-{%=o.minute%}-{%=o.second%}</script>
+  <script type="text/x-tmpl" id="attachment-filename">Zendesk-{%= o.id %}-attachments-{% include("_date-format", o); %}.zip</script>
+  <script type="text/x-tmpl" id="_date-format">{%=o.year%}{%=o.month%}{%=o.day%}{%=o.hour%}{%=o.minute%}{%=o.second%}</script>
 
 </html>
