@@ -100,22 +100,12 @@ $(function() {
 
 	function displayAttachments() {
 		var html = $.map(attachments, function(attachment) {
-			return (
-				"<li>" +
-				"<a href='"+attachment.contentUrl+"' target='_blank'>"+attachment.filename+"</a>" +
-				"</li>"
-			)
+			return (tmpl("attachment-link", attachment));
 		});
 		$list
 		.append(html)
 		.toggle();
-		message(
-			"<span id='count'>" + 
-				attachments.length + 
-				" attachment" + 
-				(attachments.length == 1 ? "" : "s") + 
-			"</span> found in this ticket."
-		);
+		message(tmpl("attachment-message", attachments.length));
 	}
 
 	function makeZip() {
@@ -148,11 +138,7 @@ $(function() {
 		})
 		.then(function (blob) {
 			client.context().then(function(context) {
-				var filename = "Zendesk-";
-				filename += context.ticketId;
-				filename += "-attachments-";
-				filename += new Date().getTime();
-				filename += ".zip";
+				var filename = tmpl("attachment-filename", context);
 				saveAs(blob, filename);
 			})
 		});

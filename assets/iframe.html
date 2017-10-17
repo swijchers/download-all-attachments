@@ -11,6 +11,8 @@
   <script type="text/javascript" src="jszip-utils.js"></script>
   <script type="text/javascript" src="FileSaver.js"></script>
 
+  <script src="tmpl.min.js"></script>
+
   <script type="text/javascript" src="main.js" defer='defer'></script>
   <link href="main.css" rel="stylesheet"/>
 
@@ -27,5 +29,16 @@
       </div>
     </div>
   </body>
+
+  <script type="text/x-tmpl" id="attachment-link">
+    <li><a href="{%=o.contentUrl%}" target="_blank">{%=o.filename%}</a></li>
+  </script>
+
+  <script type="text/x-tmpl" id="attachment-message">
+    <span id="count">{%= o %} attachment{%= (o == 1 ? "" : "s") %}</span> found in this ticket.
+  </script>
+
+  <!-- This one must be all on one line! -->
+  <script type="text/x-tmpl" id="attachment-filename">Zendesk-{%= o.ticketId %}-attachments-{%= new Date().getTime() %}.zip</script>
 
 </html>
