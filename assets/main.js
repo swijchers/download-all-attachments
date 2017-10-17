@@ -138,10 +138,25 @@ $(function() {
 		})
 		.then(function (blob) {
 			client.context().then(function(context) {
-				var filename = tmpl("attachment-filename", context);
+				var date = new Date();
+				var o = {
+					id: context.ticketId,
+					year: date.getFullYear(),
+					month: zeroPad(date.getMonth()+1),
+					day: zeroPad(date.getDate()),
+					hour: zeroPad(date.getHours()),
+					minute: zeroPad(date.getMinutes()),
+					second: zeroPad(date.getSeconds()),
+					millis: date.getMilliseconds()
+				}
+				var filename = tmpl("attachment-filename", o);
 				saveAs(blob, filename);
 			})
 		});
+	}
+
+	function zeroPad(n) {
+		return ("0" + n).slice(-2);
 	}
 
 	function message(message) {
