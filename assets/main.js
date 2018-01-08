@@ -71,7 +71,8 @@ $(function() {
 	}
 
 	function findAttachments() {
-		return client.get(COMMENT_PATH)
+		return client
+			.get(COMMENT_PATH)
 			.then(function(response) {
 				attachments = getAllAttachments(response);
 				return new Promise(function(resolve, reject) {
@@ -128,35 +129,73 @@ $(function() {
 
 	function downloadAttachments() {
 		var first = true;
-		return makeZip()
-		.generateAsync({type:"blob"}, function updateCallback(metadata) {
-
-			if (first) {
-				$progress.show();
-				first = false;
+		return client
+		.metadata()
+		.then(function(metadata) {
+			if (metadata.settings.zip) {
+				return makeZip()
+					.generateAsync({type:"blob"}, function updateCallback(metadata) {
+						var percent = metadata.percent;
+						$progress.percent = percent;
+						$progress.show();
+						status("Making ZIP: " + Math.round(percent) + "%");
+					})
+					.then(function (blob) {
+						client
+							.context()
+							.then(function(context) {
+								var filename = tmpl(
+									"attachment-filename",
+									createFilenameObject(context.ticketId)
+								);
+								saveAs(blob, filename);
+							});
+					});
+			} else {
+				var downloaded = 0,
+					total = attachments.length,
+					anyErrors = false,
+					promises = [];
+				$.each(attachments, function(index, attachment) {
+					promises.push(new Promise(function(resolve, reject) {
+						JSZipUtils.getBinaryContent(attachment.contentUrl, function(err, data) {
+							if (err) {
+								console.log(err);
+								reject(err);
+							} else {
+								downloaded++;
+								$progress.show();
+								$progress.percent = downloaded/total * 100;
+								status("Downloading " + downloaded + " / " + total + " files");
+								saveAs(new Blob([data]), attachment.filename);
+								resolve();
+							}
+						});
+					}));
+				});
+				return Promise.all(promises);
 			}
-
-			var percent = metadata.percent;
-			$progress.percent = percent;
-			status("Making ZIP: " + percent.toFixed(2) + "%");
 		})
-		.then(function (blob) {
-			client.context().then(function(context) {
-				var date = new Date();
-				var o = {
-					id: context.ticketId,
-					year: date.getFullYear(),
-					month: zeroPad(date.getMonth()+1),
-					day: zeroPad(date.getDate()),
-					hour: zeroPad(date.getHours()),
-					minute: zeroPad(date.getMinutes()),
-					second: zeroPad(date.getSeconds()),
-					millis: date.getMilliseconds()
-				}
-				var filename = tmpl("attachment-filename", o);
-				saveAs(blob, filename);
-			})
-		});
+	}
+
+	// create an object with an ID field and all the date fields.
+	function createFilenameObject(id) {
+		return $.extend(
+			{ id: id },
+			formatDate(new Date())
+		);
+	}
+
+	function formatDate(date) {
+		return {
+			year: date.getFullYear(),
+			month: zeroPad(date.getMonth()+1),
+			day: zeroPad(date.getDate()),
+			hour: zeroPad(date.getHours()),
+			minute: zeroPad(date.getMinutes()),
+			second: zeroPad(date.getSeconds()),
+			millis: date.getMilliseconds()
+		}
 	}
 
 	function zeroPad(n) {
