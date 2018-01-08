@@ -53,7 +53,11 @@ $(function() {
 				$progress.percent = 0;
 				show($interface);
 			}, 2000);
-		});
+		})
+		.catch(function(err) {
+			message(err);
+			show($interface);
+		})
 	});
 	
 	$message.on("click", function() {
