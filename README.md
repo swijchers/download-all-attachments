@@ -1,15 +1,23 @@
 ## Download All Attachments
 
-Tired of downloading Zendesk attachments one... at... a... time? I was, so I made this app. Download all attachments from a ticket with one click!
+Tired of downloading a million Zendesk attachments one... at... a... time? I was, so I made this app. Download all attachments from a ticket with one click!
 
-There's not really much to it:
+There's nothing to it:
 
 * Install the app via the marketplace and it will show up in the sidebar.
 * If a ticket has attachments, you get a "Download All Attachments" button.
 * Click that button to have a ZIP of all attachments downloaded to your computer.
-  * You can also click on the count of attachments (e.g., "4 attachments found") to get a list of all attachments.
 
 This app does all its work directly in the browser, making it a safe choice for corporate environments.
+
+### OPTIONS
+
+* You can click on the count of attachments (e.g., "4 attachments found") to get a list of all attachments.
+* If you want to download all of the files individually instead of in a ZIP, you can disable the ZIP functionality in the app's settings page.
+  * Your app's settings page is at Admin > Manage > Download All Attachments > App Configuration.
+
+  ![](assets/app-settings.gif).
+
 
 ### DISCLAIMERS
 
@@ -23,7 +31,7 @@ Source code is maintained at [https://github.com/chuck-wood/download-all-attachm
 
 Icons made by [Freepik](http://www.flaticon.com/authors/freepik) from [www.flaticon.com](http://www.flaticon.com). Licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/).
 
-### Screenshot(s):
+### Screenshots:
 ![](assets/screenshot-0.png)
 ![](assets/screenshot-1.png)
 ![](assets/screenshot-2.png)
