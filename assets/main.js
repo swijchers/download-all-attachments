@@ -18,6 +18,7 @@ $(function() {
 	;
 
 	client.on('app.registered', function(event) {
+
 		$progress.hide();
 		findAttachments()
 		.then(function() {
@@ -62,7 +63,9 @@ $(function() {
 	
 	$message.on("click", function() {
 		$list.toggle(0, function() { // expand the list, and...
-			client.invoke('resize', { height: $container.css("height") }); // ...expand the app so you can see the list
+			client.invoke('resize', {
+				height: $container.css("height") // ...expand the app so you can see the list
+			});
 		});
 	});
 
@@ -108,8 +111,8 @@ $(function() {
 			return (tmpl("attachment-link", attachment));
 		});
 		$list
-		.append(html)
-		.toggle();
+			.append(html)
+			.toggle();
 		message(tmpl("attachment-message", attachments.length));
 	}
 
@@ -128,7 +131,6 @@ $(function() {
 	}
 
 	function downloadAttachments() {
-		var first = true;
 		return client
 		.metadata()
 		.then(function(metadata) {
@@ -154,7 +156,6 @@ $(function() {
 			} else {
 				var downloaded = 0,
 					total = attachments.length,
-					anyErrors = false,
 					promises = [];
 				$.each(attachments, function(index, attachment) {
 					promises.push(new Promise(function(resolve, reject) {
