@@ -63,9 +63,7 @@ $(function() {
 	
 	$message.on("click", function() {
 		$list.toggle(0, function() { // expand the list, and...
-			client.invoke('resize', {
-				height: $container.css("height") // ...expand the app so you can see the list
-			});
+			resize($container.css("height")); // ...expand the app so you can see the list
 		});
 	});
 
@@ -103,6 +101,10 @@ $(function() {
 	function layout(prefs) {
 		var attachmentsFound = prefs.attachmentsFound;
 		var height = attachmentsFound ? "4rem" : "2rem";
+		resize(height);
+	}
+
+	function resize(height) {
 		client.invoke('resize', { height: height });
 	}
 
