@@ -20,6 +20,7 @@ $(function() {
 	client.on('app.registered', function(event) {
 
 		$progress.hide();
+
 		findAttachments()
 		.then(function() {
 			attachments.sort(defaultSort);
@@ -40,6 +41,7 @@ $(function() {
 	});
 
 	$download.on("click", function() {
+
 		hide($interface);
 		show($status);
 
@@ -163,7 +165,7 @@ $(function() {
 					promises.push(new Promise(function(resolve, reject) {
 						JSZipUtils.getBinaryContent(attachment.contentUrl, function(err, data) {
 							if (err) {
-								console.log(err);
+								console.error(err);
 								reject(err);
 							} else {
 								downloaded++;
