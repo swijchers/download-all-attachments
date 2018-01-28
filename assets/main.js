@@ -159,6 +159,7 @@ $(function() {
 	}
 
 	function downloadAttachments() {
+		var first = true;
 		return client
 		.metadata()
 		.then(function(metadata) {
@@ -167,7 +168,11 @@ $(function() {
 					.generateAsync({type:"blob"}, function updateCallback(metadata) {
 						var percent = metadata.percent;
 						$progress.percent = percent;
-						$progress.show();
+						if (first) {
+							$progress.show();
+							resize();
+							first = false;
+						}
 						status("Making ZIP: " + Math.round(percent) + "%");
 					})
 					.then(function (blob) {
@@ -193,7 +198,11 @@ $(function() {
 								reject(err);
 							} else {
 								downloaded++;
-								$progress.show();
+								if (first) {
+									$progress.show();
+									resize();
+									first = false;
+								}
 								$progress.percent = downloaded/total * 100;
 								status("Downloading " + downloaded + " / " + total + " files");
 								saveAs(new Blob([data]), attachment.filename);
@@ -244,11 +253,11 @@ $(function() {
 	}
 
 	function show($element) {
-		$element.show(600);
+		$element.show(0);
 	}
 
 	function hide($element) {
-		$element.hide(600);
+		$element.hide(0);
 	}
 
 	/**
