@@ -14,7 +14,8 @@ $(function() {
 		$status = $('#status'),
 		$progress = $('#progress'),
 		$interface = $('#interface'),
-		$expand = $('#expand')
+		$expand = $('#expand'),
+		$selectAll = $("#select-all")
 	;
 
 	client.on('app.registered', function(event) {
@@ -69,6 +70,21 @@ $(function() {
 		});
 	});
 
+	$selectAll.on("click", function() {
+		$("input[type=checkbox]").prop("checked", $selectAll.prop("checked"));
+	});
+
+	// NOTE: can't use the non-delegated form here
+	$(document).on("click", "input[type=checkbox]", function() {
+		var checkboxes = $list.find("li input[type=checkbox]");
+		var checked = checkboxes.filter(":checked").length;
+		var total = checkboxes.length;
+		var allChecked = checked == total;
+		var text = "Download " + (allChecked ? "All" : "Checked");
+		$download.html(text);
+		$selectAll.prop('checked', allChecked);
+	});
+
 	function defaultSort(a, b) {
 		return a.filename > b.filename ? 1 : a.filename < b.filename ? -1 : 0;
 	}
@@ -111,8 +127,11 @@ $(function() {
 	}
 
 	function displayAttachments() {
-		var html = $.map(attachments, function(attachment) {
-			return (tmpl("attachment-link", attachment));
+		var html = $.map(attachments, function(attachment, index) {
+			return tmpl("attachment-link", {
+				index: index,
+				attachment: attachment
+			});
 		});
 		$list
 			.append(html)
@@ -123,13 +142,13 @@ $(function() {
 	function makeZip() {
 		var zip = new JSZip();
 		$.each(attachments, function(index, attachment) {
-			zip.file(
-				attachment.filename,
-				urlToPromise(attachment.contentUrl),
-				{
-					binary:true
-				}
-			);
+			if ($("#checkbox-"+index).is(":checked")) {
+				zip.file(
+					attachment.filename,
+					urlToPromise(attachment.contentUrl),
+					{ binary:true }
+				);
+			}
 		});
 		return zip;
 	}

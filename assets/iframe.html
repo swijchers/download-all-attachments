@@ -20,7 +20,7 @@
     <div class="container-fluid" style="display: none;" id="container">
       <div id="interface">
         <p id="message"></p>
-        <ul id="list"></ul>
+        <ul id="list"><label style="font-weight: normal;"><input type="checkbox" id="select-all" checked/> Select All</label></ul>
         <button id="download" class="btn btn-default">Download All</button>
       </div>
       <div id="status"></div>
@@ -31,7 +31,7 @@
   </body>
 
   <script type="text/x-tmpl" id="attachment-link">
-    <li><a href="{%=o.contentUrl%}" target="_blank">{%=o.filename%}</a></li>
+    <li><input type="checkbox" id="checkbox-{%= o.index %}" checked/> <a href="{%=o.attachment.contentUrl%}" target="_blank">{%=o.attachment.filename%}</a></li>
   </script>
 
   <script type="text/x-tmpl" id="attachment-message">
