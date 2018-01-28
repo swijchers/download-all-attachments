@@ -47,7 +47,8 @@ $(function() {
 		show($status);
 
 		status("Fetching attachments...");
-		
+		resize();
+
 		downloadAttachments()
 		.then(function() {
 			status("ZIP done!");
@@ -56,6 +57,7 @@ $(function() {
 				hide($progress);
 				$progress.percent = 0;
 				show($interface);
+				resize();
 			}, 2000);
 		})
 		.catch(function(err) {
@@ -66,7 +68,7 @@ $(function() {
 	
 	$message.on("click", function() {
 		$list.toggle(0, function() { // expand the list, and...
-			resize($container.css("height")); // ...expand the app so you can see the list
+			resize(); // ...expand the app so you can see the list
 		});
 	});
 
@@ -123,6 +125,9 @@ $(function() {
 	}
 
 	function resize(height) {
+		if (height == undefined) {
+			height = $container.css("height");
+		}
 		client.invoke('resize', { height: height });
 	}
 
