@@ -12,11 +12,12 @@ This app does all its work directly in the browser, making it a safe choice for 
 
 ### OPTIONS
 
-* You can click on the count of attachments (e.g., "4 attachments found") to get a list of all attachments.
+* Click on the count of attachments ("4 attachments found") to get a list of all attachments. Each one is a link, if you just want to find and download one file.
+* By default, all files are included. Use the checkboxes to deselect any files you don't want.
 * If you want to download all of the files individually instead of in a ZIP, you can disable the ZIP functionality in the app's settings page.
   * Your app's settings page is at Admin > Manage > Download All Attachments > App Configuration.
 
-  ![](assets/app-settings.gif).
+  ![](assets/img/app-settings.gif).
 
 
 ### DISCLAIMERS
@@ -32,6 +33,6 @@ Source code is maintained at [https://github.com/chuck-wood/download-all-attachm
 Icons made by [Freepik](http://www.flaticon.com/authors/freepik) from [www.flaticon.com](http://www.flaticon.com). Licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/).
 
 ### Screenshots:
-![](assets/screenshot-0.png)
-![](assets/screenshot-1.png)
-![](assets/screenshot-2.png)
+![](assets/img/screenshot-0.png)
+![](assets/img/screenshot-1.png)
+![](assets/img/screenshot-2.png)
