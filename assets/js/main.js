@@ -68,9 +68,11 @@ $(function() {
 	});
 	
 	$message.on("click", function() {
-		$list.toggle(0, function() { // expand the list, and...
-			resize(); // ...expand the app so you can see the list
-		});
+		if (attachments.length > 0) {
+            $list.toggle(0, function() { // expand the list, and...
+                resize(); // ...expand the app so you can see the list
+            });
+		}
 	});
 
 	$selectAll.on("click", function() {
