@@ -86,9 +86,14 @@ $(function() {
 		var checkboxes = $list.find("li input[type=checkbox]");
 		var checked = checkboxes.filter(":checked").length;
 		var total = checkboxes.length;
-		var allChecked = checked == total;
-		var text = "Download " + (allChecked ? "All" : "Checked");
-		$download.html(text);
+		var allChecked = checked === total;
+		var noneChecked = checked === 0;
+		$download
+			.html(noneChecked ?
+                "None Checked" :
+                "Download " + (allChecked ? "All" : "Checked")
+	        )
+        	.prop('disabled', noneChecked);
 		$selectAll.prop('checked', allChecked);
 	});
 
