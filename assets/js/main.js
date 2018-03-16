@@ -90,8 +90,8 @@ $(function() {
 		var noneChecked = checked === 0;
 		$download
 			.html(noneChecked ?
-                "None Checked" :
-                "Download " + (allChecked ? "All" : "Checked")
+                "None Selected" :
+                "Download " + (allChecked ? "All" : "(" + checked + " Selected)")
 	        )
         	.prop('disabled', noneChecked);
 		$selectAll.prop('checked', allChecked);
