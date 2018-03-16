@@ -31,6 +31,7 @@ $(function() {
 		.catch(function(err) {
 			message(err);
 			$download.hide();
+			$list.hide();
 		})
 		.then(function() {
 			$container.show();
