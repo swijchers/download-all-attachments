@@ -32,6 +32,7 @@ $(function() {
 			message(err);
 			$download.hide();
 			$list.hide();
+			resize();
 		})
 		.then(function() {
 			$container.show();
@@ -64,6 +65,7 @@ $(function() {
 		.catch(function(err) {
 			message(err);
 			show($interface);
+			resize();
 		})
 	});
 	
