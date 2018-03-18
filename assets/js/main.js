@@ -71,9 +71,9 @@ $(function() {
 	
 	$message.on("click", function() {
 		if (attachments.length > 0) {
-            $list.toggle(0, function() { // expand the list, and...
-                resize(); // ...expand the app so you can see the list
-            });
+			$list.toggle(0, function() { // expand the list, and...
+				resize(); // ...expand the app so you can see the list
+			});
 		}
 	});
 
@@ -90,10 +90,10 @@ $(function() {
 		var noneChecked = checked === 0;
 		$download
 			.html(noneChecked ?
-                "None Selected" :
-                "Download " + (allChecked ? "All" : "(" + checked + " Selected)")
-	        )
-        	.prop('disabled', noneChecked);
+				"None Selected" :
+				"Download " + (allChecked ? "All" : "(" + checked + " Selected)")
+			)
+			.prop('disabled', noneChecked);
 		$selectAll.prop('checked', allChecked);
 	});
 
@@ -299,23 +299,23 @@ $(function() {
 		});
 	}
 
-    /**
-        Append a string to filename before the extension.
-    */
-    function appendStringToFilename(filename, string) {
-        var dotIndex = filename.lastIndexOf(".");
-        if (dotIndex == -1) {
-            return filename + string;   
-        } else {
-            return filename.substring(0, dotIndex) + string + filename.substring(dotIndex);
-        }
-    }
+	/**
+		Append a string to filename before the extension.
+	*/
+	function appendStringToFilename(filename, string) {
+		var dotIndex = filename.lastIndexOf(".");
+		if (dotIndex == -1) {
+			return filename + string;
+		} else {
+			return filename.substring(0, dotIndex) + string + filename.substring(dotIndex);
+		}
+	}
 
-    // Modified from
-    // https://stackoverflow.com/a/34972148/1110820
-    // Takes an array of attachments and appends numbers
-    // to the filenames to get rid of duplicates.
-    // (Like Windows filenames.)
+	// Modified from
+	// https://stackoverflow.com/a/34972148/1110820
+	// Takes an array of attachments and appends numbers
+	// to the filenames to get rid of duplicates.
+	// (Like Windows filenames.)
 	function deduplicate(attachments) {
 
 		var c = {}, 
