@@ -14,13 +14,8 @@ This app does all its work directly in the browser, making it a safe choice for 
 
 * Click on the count of attachments ("4 attachments found") to get a list of all attachments. Each one is a link, if you just want to find and download one file.
 * By default, all files are included. Use the checkboxes to deselect any files you don't want.
-* If you want to download all of the files individually instead of in a ZIP, you can disable the ZIP functionality in the app's settings page.
+* If you want to download all of the files individually instead of in a ZIP, you can disable the ZIP functionality when installing the app, or in the app's settings page after installation.
   * Your app's settings page is at Admin > Manage > Download All Attachments > App Configuration.
-
-  ![](assets/img/app-settings.gif)
-
-  You'll also have a chance to set this option when installing the app.
-
 
 ### DISCLAIMERS
 
