@@ -53,7 +53,7 @@ $(function() {
 
 		downloadAttachments()
 		.then(function() {
-			status("ZIP done!");
+			status("Done!");
 			setTimeout(function() {
 				hide($status);
 				hide($progress);
@@ -198,28 +198,30 @@ $(function() {
 					});
 			} else {
 				var downloaded = 0,
-					total = attachments.length,
+					total = $('input[type=checkbox]:checked').length,
 					promises = [];
 				$.each(attachments, function(index, attachment) {
-					promises.push(new Promise(function(resolve, reject) {
-						JSZipUtils.getBinaryContent(attachment.contentUrl, function(err, data) {
-							if (err) {
-								console.error(err);
-								reject(err);
-							} else {
-								downloaded++;
-								if (first) {
-									$progress.show();
-									resize();
-									first = false;
+					if ($("#checkbox-"+index).is(":checked")) {
+						promises.push(new Promise(function(resolve, reject) {
+							JSZipUtils.getBinaryContent(attachment.contentUrl, function(err, data) {
+								if (err) {
+									console.error(err);
+									reject(err);
+								} else {
+									downloaded++;
+									if (first) {
+										$progress.show();
+										resize();
+										first = false;
+									}
+									$progress.percent = downloaded/total * 100;
+									status("Downloading " + downloaded + " / " + total + " files");
+									saveAs(new Blob([data]), attachment.filename);
+									resolve();
 								}
-								$progress.percent = downloaded/total * 100;
-								status("Downloading " + downloaded + " / " + total + " files");
-								saveAs(new Blob([data]), attachment.filename);
-								resolve();
-							}
-						});
-					}));
+							});
+						}));
+					}
 				});
 				return Promise.all(promises);
 			}
