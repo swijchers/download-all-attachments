@@ -4,6 +4,7 @@ $(function() {
 
 	var client = ZAFClient.init(),
 		attachments = [], // attachments is "global" so we don't have to get the list repeatedly
+		ticket,
 		
 		COMMENT_PATH = "ticket.comments",
 
@@ -22,7 +23,10 @@ $(function() {
 
 		$progress.hide();
 
-		findAttachments()
+		client.get('ticket').then(response => {
+			ticket = response.ticket;
+		})
+		.then(findAttachments)
 		.then(function() {
 			attachments.sort(defaultSort);
 			displayAttachments();
@@ -103,9 +107,9 @@ $(function() {
 
 	function findAttachments() {
 		return client
-			.get(COMMENT_PATH)
+			.request('/api/v2/tickets/' + ticket.id + '/comments.json')
 			.then(function(response) {
-				attachments = getAllAttachments(response);
+				attachments = getAllAttachments(response.comments);
 				return new Promise(function(resolve, reject) {
 					var attachmentsFound = $.isArray(attachments) && attachments.length > 0;
 					layout({attachmentsFound: attachmentsFound});
@@ -118,14 +122,10 @@ $(function() {
 			});
 	}
 
-	function getAllAttachments(response) {
-		var comments = $.makeArray(response[COMMENT_PATH]);
-		var allAttachments = $.map(comments, function(comment) {
-			return []
-				.concat(comment.imageAttachments)
-				.concat(comment.nonImageAttachments);
-		});
-		return deduplicate(allAttachments);
+	function getAllAttachments(comments) {
+		return deduplicate($.map(comments, function(comment) {
+			return comment.attachments;
+		}));
 	}
 
 	function layout(prefs) {
@@ -324,19 +324,19 @@ $(function() {
 		t = function(x, n) { return appendStringToFilename(x, "(" + n + ")"); };
 		
 		return attachments.map(function(attachment) {
-			var n = c[attachment.filename] || 0;			
-			c[attachment.filename] = n + 1;
+			var n = c[attachment.file_name] || 0;			
+			c[attachment.file_name] = n + 1;
 
 			if (!n) {
 				return attachment;
 			}
 			
-			while (c[t(attachment.filename, n)]) {
+			while (c[t(attachment.file_name, n)]) {
 				n++;
 			}
 			
-			c[t(attachment.filename, n)] = 1;
-			attachment.filename = t(attachment.filename, n);
+			c[t(attachment.file_name, n)] = 1;
+			attachment.file_name = t(attachment.file_name, n);
 			return attachment;
 		});
 

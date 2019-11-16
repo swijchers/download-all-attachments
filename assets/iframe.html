@@ -45,7 +45,10 @@
   </body>
 
   <script type="text/x-tmpl" id="attachment-link">
-    <li><input type="checkbox" id="checkbox-{%= o.index %}" checked/> <a href="{%=o.attachment.contentUrl%}" target="_blank">{%=o.attachment.filename%}</a></li>
+    <li>
+      <input type="checkbox" id="checkbox-{%= o.index %}" checked/>
+      <a href="{%=o.attachment.content_url%}" target="_blank">{%=o.attachment.file_name%}</a>
+    </li>
   </script>
 
   <script type="text/x-tmpl" id="attachment-message">
