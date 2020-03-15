@@ -74,11 +74,21 @@ $(function() {
 	});
 	
 	$message.on("click", function() {
-		if (attachments.length > 0) {
-			$list.toggle(0, function() { // expand the list, and...
-				resize(); // ...expand the app so you can see the list
-			});
-		}
+		client.invoke('instances.create', {
+			location: 'modal',
+			url: 'assets/details.html',
+			size: {
+				width: '50vw',
+				height: '50vh',
+			}
+		}).then(function (modalContext) {
+			console.log(modalContext);
+		});
+		// if (attachments.length > 0) {
+			// $list.toggle(0, function() { // expand the list, and...
+				// resize(); // ...expand the app so you can see the list
+			// });
+		// }
 	});
 
 	$selectAll.on("click", function() {
